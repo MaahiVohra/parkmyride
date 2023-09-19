@@ -1,5 +1,5 @@
 "use client";
-import { useBooking } from "@/context/BookingContext";
+import { useBooking } from "@/app/context/BookingContext";
 import Image from "next/image";
 import { AiTwotoneMail } from "react-icons/ai";
 const Booking = () => {

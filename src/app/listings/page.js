@@ -1,6 +1,6 @@
 "use client";
 import "./listings.css";
-import { useBooking } from "@/context/BookingContext";
+import { useBooking } from "@/app/context/BookingContext";
 import parkingData from "./listings.json";
 import { useRouter } from "next/navigation";
 const Listings = () => {

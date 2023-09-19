@@ -1,0 +1,8 @@
+{
+  "appId": "com.parkmyride.app",
+  "appName": "parkmyride",
+  "webDir": "out",
+  "server": {
+    "androidScheme": "https"
+  }
+}

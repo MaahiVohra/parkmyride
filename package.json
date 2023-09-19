@@ -9,6 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@capacitor/android": "^5.4.0",
+    "@capacitor/cli": "^5.4.0",
+    "@capacitor/core": "^5.4.0",
+    "@clerk/nextjs": "^4.23.5",
     "autoprefixer": "10.4.15",
     "next": "13.4.19",
     "postcss": "8.4.29",

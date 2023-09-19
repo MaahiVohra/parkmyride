@@ -1,11 +1,11 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
-
+import { ClerkProvider } from "@clerk/nextjs";
 //components
-import Navbar from "@/components/Navbar/Navbar";
-import Footer from "@/components/Footer/Footer";
+import Navbar from "@/app/components/Navbar/Navbar";
+import Footer from "@/app/components/Footer/Footer";
 
-import { BookingProvider } from "@/context/BookingContext";
+import { BookingProvider } from "@/app/context/BookingContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,12 +19,14 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
 	return (
-		<html lang="en">
-			<body className={inter.className}>
-				<Navbar />
-				<BookingProvider>{children}</BookingProvider>
-				<Footer />
-			</body>
-		</html>
+		<ClerkProvider>
+			<html lang="en">
+				<body className={inter.className}>
+					<Navbar />
+					<BookingProvider>{children}</BookingProvider>
+					<Footer />
+				</body>
+			</html>
+		</ClerkProvider>
 	);
 }

@@ -1,9 +1,61 @@
 "use client";
 import { useBooking } from "@/app/context/BookingContext";
 import Image from "next/image";
+import Link from "next/link";
 import { AiTwotoneMail } from "react-icons/ai";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useAuth } from "@clerk/nextjs";
 const Booking = () => {
-	const { selectedParking, booking } = useBooking();
+	const { isLoaded, userId } = useAuth();
+	const [vehicleNumber, setVehicleNumber] = useState();
+	const router = useRouter();
+	const handleLogin = () => {
+		localStorage.setItem(
+			"booking",
+			JSON.stringify({
+				parking: selectedParking,
+				booking: booking,
+			})
+		);
+		sessionStorage.setItem("referrerURL", "booking");
+		router.push("/sign-in");
+	};
+	const { selectedParking, booking, setBooking, setSelectedParking } =
+		useBooking();
+	// useEffect(() => {
+	// 	var bookingdata;
+	// 	const getBooking = async () => {
+	// 		bookingdata = await JSON.parse(localStorage.getItem("booking"));
+	// 	};
+	// 	getBooking().then(() => {
+	// 		setBooking(bookingdata.booking);
+	// 		setSelectedParking(bookingdata.parking);
+	// 	});
+	// }, []);
+	const handleBooking = async () => {
+		const url = "http://192.168.100.19:4000/parking/book";
+		const data = {
+			parkingName: selectedParking.name,
+			parkingPrice: selectedParking.price,
+			from: booking.from,
+			until: booking.until,
+			parkingAddress: selectedParking.address,
+			vehicleNumber: vehicleNumber,
+			status: "not arrived",
+		};
+		const requestOptions = {
+			method: "POST",
+			body: JSON.stringify(data),
+		};
+		const response = await fetch(url, requestOptions);
+		if (response) {
+			const data = await response.json();
+			console.log(data.userId);
+			localStorage.setItem("userId", JSON.stringify(data.userId));
+			router.push("/dashboard");
+		}
+	};
 	return (
 		<section className="bg-white dark:bg-gray-900">
 			<div className="md:grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-12 lg:py-16 lg:grid-cols-12">
@@ -51,66 +103,44 @@ const Booking = () => {
 							<h1 className=" text-2xl font-bold  text-gray-900 dark:text-gray-200 mb-2">
 								Let's get started
 							</h1>
-							<p className="mb-10">Login or Signup to proceed</p>
-							<div className="flex flex-wrap">
-								<button
-									type="button"
-									class="text-white bg-[#3b5998] hover:bg-[#3b5998]/90 focus:ring-4 focus:outline-none focus:ring-[#3b5998]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#3b5998]/55 mr-2 mb-2">
-									<svg
-										class="w-4 h-4 mr-2"
-										aria-hidden="true"
-										xmlns="http://www.w3.org/2000/svg"
-										fill="currentColor"
-										viewBox="0 0 8 19">
-										<path
-											fill-rule="evenodd"
-											d="M6.135 3H8V0H6.135a4.147 4.147 0 0 0-4.142 4.142V6H0v3h2v9.938h3V9h2.021l.592-3H5V3.591A.6.6 0 0 1 5.592 3h.543Z"
-											clip-rule="evenodd"
-										/>
-									</svg>
-									Facebook
-								</button>
-								<button
-									type="button"
-									class="text-white bg-[#1da1f2] hover:bg-[#1da1f2]/90 focus:ring-4 focus:outline-none focus:ring-[#1da1f2]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#1da1f2]/55 mr-2 mb-2">
-									<svg
-										class="w-4 h-4 mr-2"
-										aria-hidden="true"
-										xmlns="http://www.w3.org/2000/svg"
-										fill="currentColor"
-										viewBox="0 0 20 17">
-										<path
-											fill-rule="evenodd"
-											d="M20 1.892a8.178 8.178 0 0 1-2.355.635 4.074 4.074 0 0 0 1.8-2.235 8.344 8.344 0 0 1-2.605.98A4.13 4.13 0 0 0 13.85 0a4.068 4.068 0 0 0-4.1 4.038 4 4 0 0 0 .105.919A11.705 11.705 0 0 1 1.4.734a4.006 4.006 0 0 0 1.268 5.392 4.165 4.165 0 0 1-1.859-.5v.05A4.057 4.057 0 0 0 4.1 9.635a4.19 4.19 0 0 1-1.856.07 4.108 4.108 0 0 0 3.831 2.807A8.36 8.36 0 0 1 0 14.184 11.732 11.732 0 0 0 6.291 16 11.502 11.502 0 0 0 17.964 4.5c0-.177 0-.35-.012-.523A8.143 8.143 0 0 0 20 1.892Z"
-											clip-rule="evenodd"
-										/>
-									</svg>
-									Twitter
-								</button>
-								<button
-									type="button"
-									class="text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-2">
-									<svg
-										class="w-4 h-4 mr-2"
-										aria-hidden="true"
-										xmlns="http://www.w3.org/2000/svg"
-										fill="currentColor"
-										viewBox="0 0 18 19">
-										<path
-											fill-rule="evenodd"
-											d="M8.842 18.083a8.8 8.8 0 0 1-8.65-8.948 8.841 8.841 0 0 1 8.8-8.652h.153a8.464 8.464 0 0 1 5.7 2.257l-2.193 2.038A5.27 5.27 0 0 0 9.09 3.4a5.882 5.882 0 0 0-.2 11.76h.124a5.091 5.091 0 0 0 5.248-4.057L14.3 11H9V8h8.34c.066.543.095 1.09.088 1.636-.086 5.053-3.463 8.449-8.4 8.449l-.186-.002Z"
-											clip-rule="evenodd"
-										/>
-									</svg>
-									Google
-								</button>
-								<button
-									type="button"
-									class="dark:text-white bg-transparent border-gray-300 border hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-2 gap-2 hover:text-gray-900">
-									<AiTwotoneMail />
-									Email
-								</button>
-							</div>
+							{!isLoaded && !userId ? (
+								<div>
+									<p className="mb-10">
+										Login or Signup to proceed
+									</p>
+									<div className="flex flex-wrap">
+										<button
+											type="button"
+											onClick={handleLogin}
+											class="dark:text-white bg-transparent border-gray-300 border hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-2 gap-2 hover:text-gray-900">
+											<AiTwotoneMail />
+											Login to Continue
+										</button>
+									</div>
+								</div>
+							) : (
+								<div>
+									<p className="mb-10">
+										Enter your vehicle number
+									</p>
+									<input
+										type="text"
+										className="border border-gray-300 p-2 rounded text-black"
+										placeholder="Eg. UP14CZ9357"
+										onChange={(e) =>
+											setVehicleNumber(
+												e.currentTarget.value
+											)
+										}
+										value={vehicleNumber}
+									/>
+									<button
+										onClick={handleBooking}
+										className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4 ml-4 ">
+										Confirm Booking
+									</button>
+								</div>
+							)}
 						</div>
 					</div>
 				</section>

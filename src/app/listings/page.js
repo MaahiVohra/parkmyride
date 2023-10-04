@@ -5,7 +5,8 @@ import parkingData from "./listings.json";
 import { useRouter } from "next/navigation";
 const Listings = () => {
 	const { booking } = useBooking();
-
+	const fromDate = booking.from;
+	const untilDate = booking.until;
 	const listings = parkingData.listings;
 	return (
 		<div className="dark:bg-gray-900 p-8 bg-white">
@@ -38,7 +39,7 @@ const Listings = () => {
 							id="default-search"
 							className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 							placeholder="Enter Location..."
-							defaultValue={booking.location}
+							value={booking.location}
 							required
 						/>
 						<input
@@ -46,14 +47,14 @@ const Listings = () => {
 							name="startDatetime"
 							id="startDatetime"
 							className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm  focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light"
-							value={booking.from}
+							defaultValue={fromDate}
 							required
 						/>
 						<input
 							type="datetime-local"
 							name="endDatetime"
 							id="endDatetime"
-							defaultValue={booking.until}
+							defaultValue={untilDate}
 							className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm  focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light md:pr-28"
 							required
 						/>

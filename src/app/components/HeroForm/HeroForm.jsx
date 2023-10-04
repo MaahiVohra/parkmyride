@@ -6,8 +6,8 @@ function HeroForm() {
 	const { setBooking } = useBooking();
 	const [activeTab, setActiveTab] = useState("bookNow");
 	const [location, setLocation] = useState(null);
-	const [fromDate, setFromDate] = useState(null);
-	const [untilDate, setUntilDate] = useState(null);
+	const [fromDate, setFromDate] = useState(new Date());
+	const [untilDate, setUntilDate] = useState(new Date());
 	const router = useRouter();
 
 	const handleTabClick = (tab) => {
@@ -18,8 +18,8 @@ function HeroForm() {
 		e.preventDefault();
 		const bookNowData = {
 			location: location,
-			from: fromDate ? fromDate : new Date().toUTCString(),
-			until: new Date(untilDate).toUTCString(),
+			from: fromDate ? fromDate : new Date(),
+			until: untilDate,
 		};
 		setBooking(bookNowData);
 		router.push("/listings", { scroll: false });
@@ -89,7 +89,7 @@ function HeroForm() {
 						<div className="text-right">
 							<button
 								type="submit"
-								className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4 ml-auto ">
+								className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4 ml-auto min-w-[10rem]">
 								Book
 							</button>
 						</div>
@@ -133,7 +133,7 @@ function HeroForm() {
 									required
 								/>
 							</div>
-							<div className="mb-4 flex-1">
+							<div className="flex-1">
 								<label
 									className="block text-gray-700 text-sm font-bold mb-2 dark:text-gray-200"
 									htmlFor="endDatetime">
@@ -155,7 +155,7 @@ function HeroForm() {
 						<div className="text-right">
 							<button
 								type="submit"
-								className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4 ml-auto ">
+								className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline  ml-auto min-w-[10rem]">
 								Reserve
 							</button>
 						</div>
